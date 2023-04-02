@@ -7,7 +7,7 @@ The "Custom Camera" add-on allows you to create a custom camera with various set
 
 Installation
 
-    Download the script as a Python file.
+    Download the script as a Python file (or copy/paste into notepad and save as "custom_camera.py").
     Open Blender and go to "Edit" > "Preferences".
     Click on the "Add-ons" tab.
     Click the "Install..." button and navigate to the downloaded Python file.
