@@ -1,55 +1,57 @@
 # Custom-Camera-Blender-Add-on
 Add-on for Blender that allows creation/adjustments of a camera. Allows for control with DOF and where the camera is focused using Targets.
 
-
-Custom Camera Blender Add-on Documentation
-Overview
-
-The Custom Camera Add-on is a Blender add-on that allows users to create a custom camera setup with various settings, such as sensor size, focal length, depth of field, and aperture size. This add-on is designed to streamline the process of configuring a camera in Blender, making it easier for artists to achieve the desired look for their renders.
-Compatibility
-
-This add-on is compatible with Blender 3.40.1.
+Custom Camera Add-on Documentation
+Description
+The Custom Camera Add-on allows Blender users to create and configure a custom camera with various sensor sizes, focal lengths, depth of field, and bokeh settings. It is designed to simplify the process of setting up a camera for complex scenes, providing an easy-to-use interface for adjusting camera settings.
 Installation
-
-    Download the script file (custom_camera.py).
-    Open Blender and go to Edit > Preferences.
-    In the Preferences window, navigate to the Add-ons tab.
-    Click on Install and locate the downloaded custom_camera.py file.
-    Activate the add-on by checking the checkbox next to "Object: Custom Camera".
-
+    1. Download the Add-on file.
+    2. Open Blender and navigate to Edit > Preferences > Add-ons.
+    3. Click on Install and locate the downloaded Add-on file.
+    4. Activate the Add-on by checking the box next to Object: Custom Camera.
 Usage
+The Add-on is located in the 3D viewport's Tool Shelf under the "Custom Camera" tab.
+Main Panel
+The main panel is divided into several sections:
+    • Sensor Size: Choose from a list of common sensor sizes or enter a custom size in millimeters.
+    • Focal Length: Select from a list of common focal lengths or enter a custom focal length in millimeters.
+    • Depth of Field: Enable or disable depth of field, and adjust the bokeh shape and size.
+    • Aperture Size: Choose from a list of common aperture sizes or enter a custom aperture size.
+Click on the "Create Custom Camera" button to create the camera object with the specified settings.
+Sensor Sizes
+The following sensor sizes are available:
+    1. 1/2.3" (6.17 x 4.55 mm)
+    2. 1/1.7" (7.6 x 5.7 mm)
+    3. Micro Four Thirds (17.3 x 13 mm)
+    4. APS-C (23.5 x 15.6 mm)
+    5. Super 35 (24.89 x 18.66 mm)
+    6. Full-Frame (36 x 24 mm)
+    7. Red Dragon 6K (30.7 x 15.8 mm)
+    8. Arri Alexa 65 (54.12 x 25.58 mm)
+    9. IMAX (70 x 48.5 mm)
+    10. Custom
+Focal Lengths
+The following focal lengths are available:
+    1. 18mm     5. 85mm
+    2. 24mm     6. 135mm
+    3. 35mm     7. Custom
+    4. 50mm
+       
+Depth of Field and Bokeh Settings
+    • Use Depth of Field: Enable or disable depth of field for the camera.
+    • Bokeh Shape: Choose from Circular, Hexagonal, Octagonal, Star, or Custom shapes for the bokeh.
+    • Custom Bokeh Size: If the bokeh shape is set to Custom, this setting allows you to specify the size of the bokeh.
+Aperture Sizes
+The following aperture sizes are available:
+    1. f/0.5      9. f/11
+    2. f/1.0    10. f/16
+    3. f/1.4    11. f/22
+    4. f/2.0    12. f/32
+    5. f/2.8    13. f/45
+    6. f/4.0    14. f/64
+    7. f/5.6    15. f/90
+    8. f/8.0    16. Custom
 
-After installing the add-on, you will find the Custom Camera panel in the 3D Viewport, under the Tool Shelf in a new tab called Custom Camera.
-Custom Camera Panel
-
-The Custom Camera panel provides options to configure the camera settings:
-
-    Sensor Size: Choose from a list of predefined sensor sizes or select Custom to set a custom sensor size in millimeters.
-    Focal Length: Choose from a list of predefined focal lengths or select Custom to set a custom focal length in millimeters.
-    Use Depth of Field: Enable or disable depth of field for the camera.
-    Bokeh Shape: Choose from a list of predefined bokeh shapes or select Custom to set a custom bokeh size.
-    Aperture Size: Choose from a list of predefined aperture sizes or select Custom to set a custom aperture size.
-
-Click on the Create Custom Camera button to create a new camera with the specified settings.
-Custom Camera Object
-
-After creating a custom camera, the add-on will generate a new Camera object in the 3D Viewport with the specified settings. The Camera object is named "CustomCamera" and is placed in a collection called "Camera Collection".
-
-The add-on also creates two helper objects:
-
-    CAM_target: An empty object that the camera is aimed at via a Track To constraint.
-    DOF_target (optional): An empty object that defines the focus point for depth of field, if depth of field is enabled.
-
-These helper objects can be moved to change the camera's orientation and focus.
-Uninstallation
-
-To uninstall the Custom Camera Add-on, follow these steps:
-
-    Open Blender and go to Edit > Preferences.
-    In the Preferences window, navigate to the Add-ons tab.
-    Search for "Custom Camera" in the search bar.
-    Click on the add-on and then click on the Remove button.
-
-License
-
-This add-on is created by Montana Reece and is licensed under the terms of the MIT License.
+Limitations
+    • The Add-on has only been tested on Blender 3.40.1.
+    • Custom aperture sizes are limited to a range of f/0.5 to f/90.
