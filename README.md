@@ -84,6 +84,7 @@ Limitations
 
     The Add-on has only been tested on Blender 3.40.1 and above.
     Custom aperture sizes are limited to a range of f/0.5 to f/90.
+    ONLY SUPPORTS MICROSOFT WINDOWS (only tested in Windows 10 and 11 Pro+)
     
     
     
