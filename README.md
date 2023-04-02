@@ -79,6 +79,9 @@ The following aperture sizes are available:
     f/64
     f/90
     Custom
+    
+    
+Dpeth of Field and Camera Target Focus are controlled by Emptys. (DOF_target, CAM_target)
 
 Limitations
 
