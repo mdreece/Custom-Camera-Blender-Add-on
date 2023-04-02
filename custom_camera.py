@@ -211,6 +211,12 @@ class CustomCameraProperties(bpy.types.PropertyGroup):
         update=update_camera_settings,
     )
 
+    camera_collection_selected: BoolProperty(
+        name="Camera Collection Selected",
+        description="Whether the camera collection is selected",
+        default=False,
+    )
+
 
 
 
@@ -282,13 +288,22 @@ class CUSTOMCAMERA_PT_main_panel(bpy.types.Panel):
                 row = layout.row()
                 row.prop(props, "custom_aperture_size")
 
-        row = layout.row()
-        row.operator("customcamera.create_camera", text="Create Custom Camera")
+        if not bpy.data.objects.get("CustomCamera"): # added this line
+            row = layout.row()
+            row.operator("customcamera.create_camera", text="Create Custom Camera")
 
         layout.separator()
 
-        row = layout.row()
-        row.operator("customcamera.select_camera_collection", text="Select Camera Collection")
+        if bpy.data.objects.get("CustomCamera"):
+            row = layout.row()
+            row.operator("customcamera.select_camera_collection", text="Select Camera Collection")
+
+
+
+
+
+
+
 
 
 
