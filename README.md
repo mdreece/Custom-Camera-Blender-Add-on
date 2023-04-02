@@ -4,6 +4,7 @@ Add-on for Blender that allows creation/adjustments of a camera. Allows for cont
 Custom Camera: v2.2 (alpha)
 
 The "Custom Camera" add-on allows you to create a custom camera with various settings in Blender.
+
 Installation
 
     Download the script as a Python file.
