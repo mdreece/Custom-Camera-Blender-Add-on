@@ -1,7 +1,7 @@
 bl_info = {
     "name": "Custom Camera",
     "author": "Montana Reece",
-    "version": (2, 1),
+    "version": (2, 2),
     "blender": (3, 40, 1),
     "location": "View3D > Tool Shelf > Custom Camera Add-on",
     "description": "Add a custom camera setup",
@@ -59,14 +59,14 @@ def update_camera_settings(self, context):
         else:
             camera_data.dof.aperture_fstop = props.custom_aperture_size
 
-        # Connect the camera to the DOF_target object via a Track To constraint
-        dof_target_object = props.dof_target
-        if dof_target_object:
-            camera_object.constraints.clear()
-            cam_track_constraint = camera_object.constraints.new(type='TRACK_TO')
-            cam_track_constraint.target = dof_target_object
-            cam_track_constraint.track_axis = 'TRACK_NEGATIVE_Z'
-            cam_track_constraint.up_axis = 'UP_Y'
+            # Connect the camera to the DOF_target object via a Track To constraint
+            cam_target_object = props.cam_target
+            if cam_target_object:
+                camera_object.constraints.clear()
+                cam_track_constraint = camera_object.constraints.new(type='TRACK_TO')
+                cam_track_constraint.target = cam_target_object
+                cam_track_constraint.track_axis = 'TRACK_NEGATIVE_Z'
+                cam_track_constraint.up_axis = 'UP_Y'
 
 
 
@@ -203,7 +203,7 @@ class CustomCameraProperties(bpy.types.PropertyGroup):
 
 
 class CUSTOMCAMERA_PT_main_panel(bpy.types.Panel):
-    bl_label = "Custom Camera v2.1"
+    bl_label = "Custom Camera"
     bl_idname = "CUSTOMCAMERA_PT_main_panel"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
