@@ -1,7 +1,7 @@
 bl_info = {
     "name": "Custom Camera",
     "author": "Montana Reece",
-    "version": (2, 2),
+    "version": (2, 3),
     "blender": (3, 40, 1),
     "location": "View3D > Tool Shelf > Custom Camera Add-on",
     "description": "Add a custom camera setup",
@@ -33,6 +33,9 @@ def update_camera_settings(self, context):
                 camera_object.users_collection[0].objects.link(dof_target_object)
                 dof_target_object.location = Vector((0, 0, 0))
             camera_data.dof.focus_object = dof_target_object
+
+            # Set the distance of the DOF target empty
+            dof_target_object.location = camera_object.location + camera_object.matrix_world.to_quaternion() @ Vector((0.0, 0.0, -props.dof_target_distance))
         else:
             # Remove DOF_target object if it exists
             dof_target_object = bpy.data.objects.get("DOF_target")
@@ -200,6 +203,34 @@ class CustomCameraProperties(bpy.types.PropertyGroup):
         description="Object for Camera Target",
     )
 
+    dof_target_distance: FloatProperty(
+        name="DOF Target Distance",
+        description="Set distance of the DOF target empty",
+        default=5.0,
+        min=0.0,
+        update=update_camera_settings,
+    )
+
+
+
+
+class CUSTOMCAMERA_OT_select_camera_collection(bpy.types.Operator):
+    bl_idname = "customcamera.select_camera_collection"
+    bl_label = "Select Camera Collection"
+    bl_description = "Select all objects in the Camera Collection"
+
+    def execute(self, context):
+        camera_collection = bpy.data.collections.get("Camera Collection")
+
+        if camera_collection:
+            for obj in camera_collection.objects:
+                obj.select_set(True)
+        else:
+            self.report({'WARNING'}, "Camera Collection not found")
+
+        return {'FINISHED'}
+
+
 
 
 class CUSTOMCAMERA_PT_main_panel(bpy.types.Panel):
@@ -236,6 +267,8 @@ class CUSTOMCAMERA_PT_main_panel(bpy.types.Panel):
 
         if props.use_depth_of_field:
             row = layout.row()
+            row.prop(props, "dof_target_distance")
+            row = layout.row()
             row.prop(props, "bokeh_shape")
 
             if props.bokeh_shape == "CUSTOM":
@@ -254,7 +287,8 @@ class CUSTOMCAMERA_PT_main_panel(bpy.types.Panel):
 
         layout.separator()
 
-
+        row = layout.row()
+        row.operator("customcamera.select_camera_collection", text="Select Camera Collection")
 
 
 
@@ -317,17 +351,21 @@ class CUSTOMCAMERA_OT_create_camera(bpy.types.Operator):
 
 
 
+
+
 def register():
     bpy.utils.register_class(CustomCameraProperties)
     bpy.types.Scene.custom_camera_props = bpy.props.PointerProperty(type=CustomCameraProperties)
     bpy.utils.register_class(CUSTOMCAMERA_OT_create_camera)
     bpy.utils.register_class(CUSTOMCAMERA_PT_main_panel)
+    bpy.utils.register_class(CUSTOMCAMERA_OT_select_camera_collection)
 
 def unregister():
     bpy.utils.unregister_class(CustomCameraProperties)
     del bpy.types.Scene.custom_camera_props
     bpy.utils.unregister_class(CUSTOMCAMERA_OT_create_camera)
     bpy.utils.unregister_class(CUSTOMCAMERA_PT_main_panel)
+    bpy.utils.unregister_class(CUSTOMCAMERA_OT_select_camera_collection)
 
 if __name__ == "__main__":
     register()
