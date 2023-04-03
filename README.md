@@ -1,6 +1,7 @@
 # Custom-Camera-Blender-Add-on (0.3.0 alpha)
 Add-on for Blender that allows creation/adjustments of a camera. Allows for control with DOF and where the camera is focused using Targets.
 Documentation for Custom Camera Add-on
+(Tested in Blender v3.4 and up)
 
 The Custom Camera add-on is a Blender add-on that allows users to create a custom camera with a variety of settings, including sensor size, focal length, depth of field, and aperture size. The add-on also includes the ability to create a Camera Collection and connect the camera to a target object via a Track To constraint. The add-on is designed to provide users with greater control over their camera settings, and is particularly useful for those who work in the field of photography and cinematography.
 
