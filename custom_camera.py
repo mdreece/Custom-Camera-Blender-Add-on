@@ -1,7 +1,7 @@
 bl_info = {
     "name": "Custom Camera",
     "author": "Montana Reece",
-    "version": (2, 7),
+    "version": (0, 2, 7),
     "blender": (3, 40, 1),
     "location": "View3D > Tool Shelf > Custom Camera Add-on",
     "description": "Add a custom camera setup",
