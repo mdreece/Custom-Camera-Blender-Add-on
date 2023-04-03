@@ -47,7 +47,8 @@ If you encounter any issues with the Custom Camera add-on, please feel free to o
     Error displayed in Editor Type ‘Info’.
     Current Version of Blender.exe
 
-Changelog
+Changelog:
+
 4/2/2023: v2.7 (alpha)
 
     New options for Camera movement (still janky)
