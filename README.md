@@ -49,6 +49,11 @@ If you encounter any issues with the Custom Camera add-on, please feel free to o
 
 Changelog:
 
+4/2/2023: v0.2.9 (alpha)
+    
+    Button in Preferences to automatically update the addon (restart of Blender required).
+    Button in Preferences linking to the Add-on GITHUB.
+
 4/2/2023: v0.2.7 (alpha)
 
     New options for Camera movement (still janky)
@@ -60,4 +65,5 @@ Changelog:
     DOF target distance slider in Add-on panel
 
 4/1/2023: v0.2.2 (alpha)
-• RELEASE!!
+
+    RELEASE!!
