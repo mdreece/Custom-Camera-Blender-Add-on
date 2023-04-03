@@ -1,7 +1,7 @@
 bl_info = {
     "name": "Custom Camera",
     "author": "Dave Nectariad Rome",
-    "version": (0, 2, 9),
+    "version": (0, 3, 0),
     "blender": (3, 40, 1),
     "location": "View3D > Tool Shelf > Custom Camera Add-on",
     "description": "Add a custom camera setup",
@@ -88,14 +88,27 @@ def update_custom_camera(self, context):
             self.report({"INFO"}, "Custom Camera add-on update cancelled.")
             return {'CANCELLED'}
 
+    # Download the updated script
     url = "https://raw.githubusercontent.com/mdreece/Custom-Camera-Blender-Add-on/main/custom_camera.py"
     response = urllib.request.urlopen(url)
     data = response.read()
+
+    # Write the updated script to disk
     script_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "custom_camera.py")
     with open(script_path, "wb") as f:
         f.write(data)
-    self.report({"INFO"}, "Custom Camera add-on updated successfully. Blender will now close and you will need to reopen it.")
-    bpy.ops.wm.quit_blender()
+
+    # Prompt to save the project before closing Blender
+    return bpy.ops.wm.quit_blender('INVOKE_DEFAULT')
+
+    # Prompt to save the project before closing Blender
+    wm = bpy.context.window_manager
+    return wm.invoke_props_dialog(self.quit_blender, width=400)
+
+def quit_blender(self, context):
+    bpy.ops.wm.save_mainfile()
+    self.quit_blender()
+
 
 class CustomCameraPreferences(bpy.types.AddonPreferences):
     bl_idname = __name__
