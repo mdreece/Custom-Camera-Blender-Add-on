@@ -1,4 +1,4 @@
-# Custom-Camera-Blender-Add-on (0.2.7 alpha)
+# Custom-Camera-Blender-Add-on (0.2.9 alpha)
 Add-on for Blender that allows creation/adjustments of a camera. Allows for control with DOF and where the camera is focused using Targets.
 Documentation for Custom Camera Add-on
 
