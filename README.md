@@ -67,3 +67,5 @@ Changelog:
 4/1/2023: v0.2.2 (alpha)
 
     RELEASE!!
+
+"Dave Nectariad Rome" is just my full name all mixed up. (Entire Script is made for fun)
