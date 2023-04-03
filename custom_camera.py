@@ -1,7 +1,7 @@
 bl_info = {
     "name": "Custom Camera",
     "author": "Montana Reece",
-    "version": (0, 2, 7),
+    "version": (0, 2, 9),
     "blender": (3, 40, 1),
     "location": "View3D > Tool Shelf > Custom Camera Add-on",
     "description": "Add a custom camera setup",
@@ -14,6 +14,9 @@ from mathutils import Vector
 import bpy
 from bpy.props import EnumProperty, FloatProperty, StringProperty, BoolProperty
 from bpy_extras.io_utils import ImportHelper
+import urllib.request
+import os
+import subprocess
 
 def update_camera_settings(self, context):
     camera_collection = bpy.data.collections.get("Camera Collection")
@@ -76,9 +79,39 @@ def update_camera_settings(self, context):
                 cam_track_constraint.track_axis = 'TRACK_NEGATIVE_Z'
                 cam_track_constraint.up_axis = 'UP_Y'
 
+def update_custom_camera(self, context):
+    if bpy.data.is_dirty:
+        save_prompt = "Your project has unsaved changes. Do you want to save before updating the Custom Camera add-on?"
+        save_options = {'CANCELLED', 'FINISHED', 'NO', 'YES'}
+        save_choice = bpy.ops.wm.save_mainfile('INVOKE_DEFAULT')
+        if save_choice == 'CANCELLED':
+            self.report({"INFO"}, "Custom Camera add-on update cancelled.")
+            return {'CANCELLED'}
 
+    url = "https://raw.githubusercontent.com/mdreece/Custom-Camera-Blender-Add-on/main/custom_camera.py"
+    response = urllib.request.urlopen(url)
+    data = response.read()
+    script_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "custom_camera.py")
+    with open(script_path, "wb") as f:
+        f.write(data)
+    self.report({"INFO"}, "Custom Camera add-on updated successfully. Blender will now close and you will need to reopen it.")
+    bpy.ops.wm.quit_blender()
 
+class CustomCameraPreferences(bpy.types.AddonPreferences):
+    bl_idname = __name__
 
+    def draw(self, context):
+        layout = self.layout
+        layout.operator("customcamera.update_custom_camera", text="Update Custom Camera")
+        layout.operator("wm.url_open", text="Visit GitHub Repository").url = "https://github.com/mdreece/Custom-Camera-Blender-Add-on"
+class UPDATE_CUSTOMCAMERA_OT_update_custom_camera(bpy.types.Operator):
+    bl_idname = "customcamera.update_custom_camera"
+    bl_label = "Update Custom Camera"
+    bl_description = "Update the Custom Camera add-on with the latest version from GitHub"
+
+    def execute(self, context):
+        update_custom_camera(self, context)
+        return {"FINISHED"}
 
 class CustomCameraProperties(bpy.types.PropertyGroup):
     sensor_sizes = [
@@ -417,6 +450,8 @@ def register():
     bpy.utils.register_class(CUSTOMCAMERA_OT_delete_camera)
     bpy.utils.register_class(CUSTOMCAMERA_OT_select_camera_collection)
     bpy.utils.register_class(CUSTOMCAMERA_OT_deselect_camera_collection)
+    bpy.utils.register_class(UPDATE_CUSTOMCAMERA_OT_update_custom_camera)
+    bpy.utils.register_class(CustomCameraPreferences)
 
 def unregister():
     bpy.utils.unregister_class(CustomCameraProperties)
@@ -426,6 +461,8 @@ def unregister():
     bpy.utils.unregister_class(CUSTOMCAMERA_OT_delete_camera)
     bpy.utils.unregister_class(CUSTOMCAMERA_OT_select_camera_collection)
     bpy.utils.unregister_class(CUSTOMCAMERA_OT_deselect_camera_collection)
+    bpy.utils.unregister_class(CustomCameraPreferences)
+    bpy.utils.unregister_class(UPDATE_CUSTOMCAMERA_OT_update_custom_camera)
 
 if __name__ == "__main__":
     register()
