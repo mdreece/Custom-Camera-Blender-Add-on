@@ -5,13 +5,13 @@ Documentation for Custom Camera Add-on
 The Custom Camera add-on is a Blender add-on that allows users to create a custom camera with a variety of settings, including sensor size, focal length, depth of field, and aperture size. The add-on also includes the ability to create a Camera Collection and connect the camera to a target object via a Track To constraint. The add-on is designed to provide users with greater control over their camera settings, and is particularly useful for those who work in the field of photography and cinematography.
 Installation
 To install the Custom Camera add-on, follow these steps:
-    1. Download the latest release of the Custom Camera add-on from the GitHub repository.
-    2. Open Blender and go to Edit > Preferences.
-    3. Click on the Add-ons tab.
-    4. Click on the Install... button in the top right corner of the window.
-    5. Navigate to the downloaded add-on file and select it.
-    6. Click on the Install Add-on button.
-    7. Once the add-on has been installed, make sure to check the Custom Camera checkbox in the Add-ons list and save your preferences.
+       1. Download the latest release of the Custom Camera add-on from the GitHub repository.
+       2. Open Blender and go to Edit > Preferences.
+       3. Click on the Add-ons tab.
+       4. Click on the Install... button in the top right corner of the window.
+       5. Navigate to the downloaded add-on file and select it.
+       6. Click on the Install Add-on button.
+       7. Once the add-on has been installed, make sure to check the Custom Camera checkbox in the Add-ons list and save your preferences.
 Usage
 The Custom Camera add-on adds a new panel to the 3D Viewport UI named Custom Camera. The panel contains a variety of settings for customizing the camera.
 To create a new custom camera, click on the Create Custom Camera button. This will create a new camera object in the scene with the specified settings. The camera will be named CustomCamera and will be located in a new collection called Camera Collection.
