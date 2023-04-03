@@ -1,7 +1,7 @@
 bl_info = {
     "name": "Custom Camera",
     "author": "Montana Reece",
-    "version": (2, 3),
+    "version": (2, 7),
     "blender": (3, 40, 1),
     "location": "View3D > Tool Shelf > Custom Camera Add-on",
     "description": "Add a custom camera setup",
@@ -15,8 +15,13 @@ import bpy
 from bpy.props import EnumProperty, FloatProperty, StringProperty, BoolProperty
 from bpy_extras.io_utils import ImportHelper
 
-
 def update_camera_settings(self, context):
+    camera_collection = bpy.data.collections.get("Camera Collection")
+    if not camera_collection:
+        # Camera collection doesn't exist yet, disable Depth of field options
+        context.scene.custom_camera_props.use_depth_of_field = False
+        return
+
     camera_object = bpy.data.objects.get("CustomCamera")
     if camera_object and camera_object.type == 'CAMERA':
         camera_data = camera_object.data
@@ -73,6 +78,8 @@ def update_camera_settings(self, context):
 
 
 
+
+
 class CustomCameraProperties(bpy.types.PropertyGroup):
     sensor_sizes = [
         ("6.17", "1/2.3\" (6.17 x 4.55 mm)", ""),
@@ -95,7 +102,6 @@ class CustomCameraProperties(bpy.types.PropertyGroup):
         ("135mm", "135mm", ""),
         ("CUSTOM", "Custom", ""),
     ]
-
     sensor_size: EnumProperty(
         name="Sensor Size",
         items=sensor_sizes,
@@ -125,7 +131,7 @@ class CustomCameraProperties(bpy.types.PropertyGroup):
     use_depth_of_field: BoolProperty(
         name="Use Depth of Field",
         description="Enable or disable depth of field",
-        default=True,
+        default=False,
         update=update_camera_settings,
     )
     depth_of_field: FloatProperty(
@@ -155,7 +161,6 @@ class CustomCameraProperties(bpy.types.PropertyGroup):
         min=0.0,
         update=update_camera_settings,
     )
-
     aperture_sizes = [
         ("0.5", "f/0.5", ""),
         ("1.0", "f/1.0", ""),
@@ -174,7 +179,6 @@ class CustomCameraProperties(bpy.types.PropertyGroup):
         ("90", "f/90", ""),
         ("CUSTOM", "Custom", ""),
     ]
-
     aperture_size: EnumProperty(
         name="Aperture Size",
         items=aperture_sizes,
@@ -189,20 +193,16 @@ class CustomCameraProperties(bpy.types.PropertyGroup):
         max=90.0,
         update=update_camera_settings,
     )
-
-
     dof_target: bpy.props.PointerProperty(
         type=bpy.types.Object,
         name="DOF Target",
         description="Object for Depth of Field",
     )
-
     cam_target: bpy.props.PointerProperty(
         type=bpy.types.Object,
         name="Camera Target",
         description="Object for Camera Target",
     )
-
     dof_target_distance: FloatProperty(
         name="DOF Target Distance",
         description="Set distance of the DOF target empty",
@@ -210,16 +210,11 @@ class CustomCameraProperties(bpy.types.PropertyGroup):
         min=0.0,
         update=update_camera_settings,
     )
-
     camera_collection_selected: BoolProperty(
         name="Camera Collection Selected",
         description="Whether the camera collection is selected",
         default=False,
     )
-
-
-
-
 class CUSTOMCAMERA_OT_select_camera_collection(bpy.types.Operator):
     bl_idname = "customcamera.select_camera_collection"
     bl_label = "Select Camera Collection"
@@ -227,17 +222,35 @@ class CUSTOMCAMERA_OT_select_camera_collection(bpy.types.Operator):
 
     def execute(self, context):
         camera_collection = bpy.data.collections.get("Camera Collection")
+        props = context.scene.custom_camera_props
 
         if camera_collection:
             for obj in camera_collection.objects:
                 obj.select_set(True)
+            props.camera_collection_selected = True
+        else:
+            self.report({'WARNING'}, "Camera Collection not found")
+            props.camera_collection_selected = False
+
+        return {'FINISHED'}
+
+class CUSTOMCAMERA_OT_deselect_camera_collection(bpy.types.Operator):
+    bl_idname = "customcamera.deselect_camera_collection"
+    bl_label = "Deselect Camera Collection"
+    bl_description = "Deselect all objects in the Camera Collection"
+
+    def execute(self, context):
+        camera_collection = bpy.data.collections.get("Camera Collection")
+        props = context.scene.custom_camera_props
+
+        if camera_collection:
+            for obj in camera_collection.objects:
+                obj.select_set(False)
+            props.camera_collection_selected = False
         else:
             self.report({'WARNING'}, "Camera Collection not found")
 
         return {'FINISHED'}
-
-
-
 
 class CUSTOMCAMERA_PT_main_panel(bpy.types.Panel):
     bl_label = "Custom Camera"
@@ -288,24 +301,28 @@ class CUSTOMCAMERA_PT_main_panel(bpy.types.Panel):
                 row = layout.row()
                 row.prop(props, "custom_aperture_size")
 
-        if not bpy.data.objects.get("CustomCamera"): # added this line
+        if bpy.data.collections.get("Camera Collection"):
+            row = layout.row()
+            props = context.scene.custom_camera_props
+
+            if props.camera_collection_selected:
+                row.operator("customcamera.deselect_camera_collection", text="Deselect Camera Collection")
+            else:
+                row.operator("customcamera.select_camera_collection", text="Select Camera Collection")
+        else:
+            row = layout.row()
+            row.operator("customcamera.create_camera_collection", text="Create Camera Collection")
+
+        if bpy.data.objects.get("CustomCamera"):
+            row = layout.row()
+            row.operator("customcamera.delete_camera", text="Delete Camera", icon='CANCEL').action = 'DELETE_CAMERA'
+
+
+        else:
             row = layout.row()
             row.operator("customcamera.create_camera", text="Create Custom Camera")
 
         layout.separator()
-
-        if bpy.data.objects.get("CustomCamera"):
-            row = layout.row()
-            row.operator("customcamera.select_camera_collection", text="Select Camera Collection")
-
-
-
-
-
-
-
-
-
 
 class CUSTOMCAMERA_OT_create_camera(bpy.types.Operator):
     bl_idname = "customcamera.create_camera"
@@ -355,6 +372,9 @@ class CUSTOMCAMERA_OT_create_camera(bpy.types.Operator):
 
             # Connect depth of field to the DOF_target object
             camera_data.dof.focus_object = dof_target_object
+
+            # Set the distance of the DOF target empty
+            dof_target_object.location = camera_object.location + camera_object.matrix_world.to_quaternion() @ Vector((0.0, 0.0, -props.dof_target_distance))
         else:
             # Disable depth of field on camera
             camera_data.dof.use_dof = False
@@ -364,23 +384,48 @@ class CUSTOMCAMERA_OT_create_camera(bpy.types.Operator):
 
         return {'FINISHED'}
 
+class CUSTOMCAMERA_OT_delete_camera(bpy.types.Operator):
+    bl_idname = "customcamera.delete_camera"
+    bl_label = "Delete Camera"
+    bl_description = "Delete the custom camera"
+
+    action: bpy.props.StringProperty()
+
+    def execute(self, context):
+        if self.action == 'DELETE_CAMERA':
+            custom_camera_obj = bpy.data.objects.get("CustomCamera")
+            if custom_camera_obj:
+                # If the camera exists, disable Depth of Field options
+                context.scene.custom_camera_props.use_depth_of_field = False
+                bpy.data.objects.remove(custom_camera_obj, do_unlink=True)
+                bpy.data.objects.remove(bpy.data.objects.get("CAM_target"), do_unlink=True)
+                bpy.data.collections.remove(bpy.data.collections.get("Camera Collection"), do_unlink=True)
+                context.scene.custom_camera_props.dof_target = None
+                context.scene.custom_camera_props.cam_target = None
+        return {'FINISHED'}
 
 
-
+    def invoke(self, context, event):
+        self.report({'INFO'}, "Are you sure you want to delete the camera?")
+        return context.window_manager.invoke_confirm(self, event)
 
 def register():
     bpy.utils.register_class(CustomCameraProperties)
     bpy.types.Scene.custom_camera_props = bpy.props.PointerProperty(type=CustomCameraProperties)
     bpy.utils.register_class(CUSTOMCAMERA_OT_create_camera)
     bpy.utils.register_class(CUSTOMCAMERA_PT_main_panel)
+    bpy.utils.register_class(CUSTOMCAMERA_OT_delete_camera)
     bpy.utils.register_class(CUSTOMCAMERA_OT_select_camera_collection)
+    bpy.utils.register_class(CUSTOMCAMERA_OT_deselect_camera_collection)
 
 def unregister():
     bpy.utils.unregister_class(CustomCameraProperties)
     del bpy.types.Scene.custom_camera_props
     bpy.utils.unregister_class(CUSTOMCAMERA_OT_create_camera)
     bpy.utils.unregister_class(CUSTOMCAMERA_PT_main_panel)
+    bpy.utils.unregister_class(CUSTOMCAMERA_OT_delete_camera)
     bpy.utils.unregister_class(CUSTOMCAMERA_OT_select_camera_collection)
+    bpy.utils.unregister_class(CUSTOMCAMERA_OT_deselect_camera_collection)
 
 if __name__ == "__main__":
     register()
