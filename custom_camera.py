@@ -1,7 +1,7 @@
 bl_info = {
     "name": "Custom Camera",
     "author": "Dave Nectariad Rome",
-    "version": (0, 3, 0),
+    "version": (0, 3, 2),
     "blender": (3, 40, 1),
     "location": "View3D > Tool Shelf > Custom Camera Add-on",
     "description": "Add a custom camera setup",
@@ -58,12 +58,21 @@ def update_camera_settings(self, context):
         else:
             camera_data.dof.aperture_blades = {
                 "CIRCULAR": 0,
+                "TRIANGLE": 3,
+                "SQUARE": 4,
+                "PENTAGON": 5,
                 "HEXAGONAL": 6,
                 "OCTAGONAL": 8,
-                "STAR": 8,
+                "ANAMORPHIC": 100, # Value to be replaced later
             }[props.bokeh_shape]
 
         # Convert aperture size to a float
+        # Convert aperture size to a float
+        if props.bokeh_shape == "ANAMORPHIC":
+            camera_data.dof.aperture_blades = 100
+            camera_data.dof.aperture_ratio = 2.0
+        else:
+            camera_data.dof.aperture_ratio = 1.0
         if props.aperture_size != "CUSTOM":
             aperture_size_float = float(props.aperture_size.split("f/")[-1])
             camera_data.dof.aperture_fstop = aperture_size_float
@@ -189,9 +198,11 @@ class CustomCameraProperties(bpy.types.PropertyGroup):
     )
     bokeh_shapes = [
         ("CIRCULAR", "Circular", ""),
+        ("TRIANGLE", "Triangle", ""),
+        ("PENTAGON", "Pentagon", ""),
         ("HEXAGONAL", "Hexagonal", ""),
         ("OCTAGONAL", "Octagonal", ""),
-        ("STAR", "Star", ""),
+        ("ANAMORPHIC", "Anamorphic", ""),
         ("CUSTOM", "Custom", ""),
     ]
     bokeh_shape: EnumProperty(
