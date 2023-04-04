@@ -1,4 +1,4 @@
-# Custom-Camera-Blender-Add-on (0.3.0 alpha)
+# Custom-Camera-Blender-Add-on (0.3.2 alpha)
 Add-on for Blender that allows creation/adjustments of a camera. Allows for control with DOF and where the camera is focused using Targets.
 Documentation for Custom Camera Add-on
 (Tested in Blender v3.4 and up)
@@ -54,9 +54,16 @@ If you encounter any issues with the Custom Camera add-on, please feel free to o
 
 Changelog:
 
+4/4/2023: v0.3.2 (alpha)
+
+    Additional Bokeh opions added:
+         - Triangle
+         - Pentagon
+         - Anamorphic (Oval)
+
 4/2/2023: v0.3.0 (alpha)
     
-       Blender prompts to save the current project prior to closing the program post updates
+    Blender prompts to save the current project prior to closing the program post updates
 
 4/2/2023: v0.2.9 (alpha)
     
