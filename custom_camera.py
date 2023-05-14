@@ -19,19 +19,22 @@ import os
 import subprocess
 
 def update_camera_settings(self, context):
+    props = context.scene.custom_camera_props  # Move this line here
+
     camera_collection = bpy.data.collections.get("Camera Collection")
-    if not camera_collection:
-        # Camera collection doesn't exist yet, disable Depth of field options
-        context.scene.custom_camera_props.use_depth_of_field = False
-        return
+    if camera_collection:
+        props.camera_collection_selected = any(obj.select_get() for obj in camera_collection.objects)
+    else:
+        props.camera_collection_selected = False
 
     camera_object = bpy.data.objects.get("CustomCamera")
     if camera_object and camera_object.type == 'CAMERA':
         camera_data = camera_object.data
-        props = context.scene.custom_camera_props
 
         camera_data.sensor_width = float(props.sensor_size) if props.sensor_size != "CUSTOM" else props.custom_sensor_size
         camera_data.lens = float(props.focal_length.rstrip("mm")) if props.focal_length != "CUSTOM" else props.custom_focal_length
+
+
 
         if props.use_depth_of_field:
             dof_target_object = bpy.data.objects.get("DOF_target")
