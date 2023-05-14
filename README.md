@@ -58,7 +58,7 @@ Conclusion
 The Custom Camera Add-on provides an easy and convenient way to create and customize cameras with various settings in Blender. With its intuitive user interface and options, you can achieve the desired camera setup for your scenes. Enjoy using the Custom Camera Add-on and unleash your creativity in Blender!
 
 
-Support
+Support:
 If you encounter any issues with the Custom Camera add-on, please feel free to open an issue on the GitHub repository. Include the following in your issue:
 
     Screenshots if able.
