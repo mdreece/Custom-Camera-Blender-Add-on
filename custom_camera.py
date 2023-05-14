@@ -1,8 +1,8 @@
 bl_info = {
     "name": "Custom Camera",
     "author": "Dave Nectariad Rome",
-    "version": (0, 3, 2),
-    "blender": (3, 40, 1),
+    "version": (0, 3, 3),
+    "blender": (3, 50, 0),
     "location": "View3D > Tool Shelf > Custom Camera Add-on",
     "description": "Add a custom camera setup",
     "warning": "",
@@ -282,9 +282,22 @@ class CUSTOMCAMERA_OT_select_camera_collection(bpy.types.Operator):
         props = context.scene.custom_camera_props
 
         if camera_collection:
+            # Deselect all objects first
+            bpy.ops.object.select_all(action='DESELECT')
+
+            # Select objects in the camera collection
             for obj in camera_collection.objects:
                 obj.select_set(True)
+
             props.camera_collection_selected = True
+
+            # Disable selection for other objects
+            bpy.context.scene.tool_settings.mesh_select_mode[:] = (False, False, False)
+            bpy.context.scene.tool_settings.mesh_select_mode[:] = (True, True, True)
+
+            # Disable object selection
+            bpy.context.scene.tool_settings.use_mesh_automerge = True
+
         else:
             self.report({'WARNING'}, "Camera Collection not found")
             props.camera_collection_selected = False
@@ -304,6 +317,11 @@ class CUSTOMCAMERA_OT_deselect_camera_collection(bpy.types.Operator):
             for obj in camera_collection.objects:
                 obj.select_set(False)
             props.camera_collection_selected = False
+
+            # Enable selection for other objects
+            bpy.context.scene.tool_settings.mesh_select_mode[:] = (True, True, True)
+            bpy.context.scene.tool_settings.use_mesh_automerge = False
+
         else:
             self.report({'WARNING'}, "Camera Collection not found")
 
