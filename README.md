@@ -4,7 +4,6 @@ Documentation for Custom Camera Add-on
 (Tested in Blender v3.4 and up)
 
 v0.3.0 (alpha) DEMO: https://youtu.be/Tjn5XVe6H-o
-
 Custom Camera Add-on User Documentation
 Introduction:
 The Custom Camera Add-on is a tool for Blender that allows you to create and customize cameras with various settings for your scenes. With this add-on, you can easily set up custom sensor size, focal length, depth of field, bokeh shape, aperture size, and more.
@@ -56,6 +55,7 @@ Additional Resources:
     • You can visit the GitHub repository for the Custom Camera Add-on to access more information, updates, and documentation.
 Conclusion
 The Custom Camera Add-on provides an easy and convenient way to create and customize cameras with various settings in Blender. With its intuitive user interface and options, you can achieve the desired camera setup for your scenes. Enjoy using the Custom Camera Add-on and unleash your creativity in Blender!
+
 
 
 Support:
