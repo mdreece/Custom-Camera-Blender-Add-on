@@ -1,8 +1,8 @@
 bl_info = {
     "name": "Custom Camera",
     "author": "Dave Nectariad Rome",
-    "version": (0, 3, 3),
-    "blender": (3, 50, 0),
+    "version": (0, 3, 5),
+    "blender": (3, 50, 1),
     "location": "View3D > Tool Shelf > Custom Camera Add-on",
     "description": "Add a custom camera setup",
     "warning": "",
@@ -12,14 +12,14 @@ bl_info = {
 
 from mathutils import Vector
 import bpy
-from bpy.props import EnumProperty, FloatProperty, StringProperty, BoolProperty
+from bpy.props import EnumProperty, FloatProperty, StringProperty, BoolProperty, IntProperty
 from bpy_extras.io_utils import ImportHelper
 import urllib.request
 import os
 import subprocess
 
 def update_camera_settings(self, context):
-    props = context.scene.custom_camera_props  # Move this line here
+    props = context.scene.custom_camera_props
 
     camera_collection = bpy.data.collections.get("Camera Collection")
     if camera_collection:
@@ -33,8 +33,6 @@ def update_camera_settings(self, context):
 
         camera_data.sensor_width = float(props.sensor_size) if props.sensor_size != "CUSTOM" else props.custom_sensor_size
         camera_data.lens = float(props.focal_length.rstrip("mm")) if props.focal_length != "CUSTOM" else props.custom_focal_length
-
-
 
         if props.use_depth_of_field:
             dof_target_object = bpy.data.objects.get("DOF_target")
@@ -70,7 +68,6 @@ def update_camera_settings(self, context):
             }[props.bokeh_shape]
 
         # Convert aperture size to a float
-        # Convert aperture size to a float
         if props.bokeh_shape == "ANAMORPHIC":
             camera_data.dof.aperture_blades = 100
             camera_data.dof.aperture_ratio = 2.0
@@ -82,14 +79,18 @@ def update_camera_settings(self, context):
         else:
             camera_data.dof.aperture_fstop = props.custom_aperture_size
 
-            # Connect the camera to the DOF_target object via a Track To constraint
-            cam_target_object = props.cam_target
-            if cam_target_object:
-                camera_object.constraints.clear()
-                cam_track_constraint = camera_object.constraints.new(type='TRACK_TO')
-                cam_track_constraint.target = cam_target_object
-                cam_track_constraint.track_axis = 'TRACK_NEGATIVE_Z'
-                cam_track_constraint.up_axis = 'UP_Y'
+        # Connect the camera to the DOF_target object via a Track To constraint
+        cam_target_object = props.cam_target
+        if cam_target_object:
+            camera_object.constraints.clear()
+            cam_track_constraint = camera_object.constraints.new(type='TRACK_TO')
+            cam_track_constraint.target = cam_target_object
+            cam_track_constraint.track_axis = 'TRACK_NEGATIVE_Z'
+            cam_track_constraint.up_axis = 'UP_Y'
+
+        # Update the resolution properties
+        context.scene.render.resolution_x = props.resolution_x
+        context.scene.render.resolution_y = props.resolution_y
 
 def update_custom_camera(self, context):
     if bpy.data.is_dirty:
@@ -192,33 +193,40 @@ class CustomCameraProperties(bpy.types.PropertyGroup):
         default=False,
         update=update_camera_settings,
     )
-    depth_of_field: FloatProperty(
-        name="Depth of Field",
-        description="Set depth of field for the camera",
-        default=0.1,
+    dof_target: bpy.props.PointerProperty(
+        type=bpy.types.Object,
+        name="DOF Target",
+        description="Object for Depth of Field",
+    )
+    cam_target: bpy.props.PointerProperty(
+        type=bpy.types.Object,
+        name="Camera Target",
+        description="Object for Camera Target",
+    )
+    dof_target_distance: FloatProperty(
+        name="DOF Target Distance",
+        description="Set distance of the DOF target empty",
+        default=5.0,
         min=0.0,
         update=update_camera_settings,
     )
-    bokeh_shapes = [
-        ("CIRCULAR", "Circular", ""),
-        ("TRIANGLE", "Triangle", ""),
-        ("PENTAGON", "Pentagon", ""),
-        ("HEXAGONAL", "Hexagonal", ""),
-        ("OCTAGONAL", "Octagonal", ""),
-        ("ANAMORPHIC", "Anamorphic", ""),
-        ("CUSTOM", "Custom", ""),
-    ]
-    bokeh_shape: EnumProperty(
-        name="Bokeh Shape",
-        items=bokeh_shapes,
-        default="CIRCULAR",
+    camera_collection_selected: BoolProperty(
+        name="Camera Collection Selected",
+        description="Whether the camera collection is selected",
+        default=False,
+    )
+    resolution_x: IntProperty(
+        name="Resolution X",
+        description="X resolution of the camera",
+        default=1920,
+        min=1,
         update=update_camera_settings,
     )
-    custom_bokeh_size: FloatProperty(
-        name="Custom Bokeh Size",
-        description="Set custom size of bokeh",
-        default=0.05,
-        min=0.0,
+    resolution_y: IntProperty(
+        name="Resolution Y",
+        description="Y resolution of the camera",
+        default=1080,
+        min=1,
         update=update_camera_settings,
     )
     aperture_sizes = [
@@ -253,28 +261,33 @@ class CustomCameraProperties(bpy.types.PropertyGroup):
         max=90.0,
         update=update_camera_settings,
     )
-    dof_target: bpy.props.PointerProperty(
-        type=bpy.types.Object,
-        name="DOF Target",
-        description="Object for Depth of Field",
-    )
-    cam_target: bpy.props.PointerProperty(
-        type=bpy.types.Object,
-        name="Camera Target",
-        description="Object for Camera Target",
-    )
-    dof_target_distance: FloatProperty(
-        name="DOF Target Distance",
-        description="Set distance of the DOF target empty",
-        default=5.0,
-        min=0.0,
+    bokeh_shapes = [
+        ("CIRCULAR", "Circular", ""),
+        ("TRIANGLE", "Triangle", ""),
+        ("SQUARE", "Square", ""),
+        ("PENTAGON", "Pentagon", ""),
+        ("HEXAGONAL", "Hexagonal", ""),
+        ("OCTAGONAL", "Octagonal", ""),
+        ("ANAMORPHIC", "Anamorphic", ""),
+        ("CUSTOM", "Custom", ""),
+    ]
+    bokeh_shape: EnumProperty(
+        name="Bokeh Shape",
+        items=bokeh_shapes,
+        default="CIRCULAR",
         update=update_camera_settings,
     )
-    camera_collection_selected: BoolProperty(
-        name="Camera Collection Selected",
-        description="Whether the camera collection is selected",
-        default=False,
+    custom_bokeh_size: FloatProperty(
+        name="Custom Bokeh Size",
+        description="Set custom bokeh size",
+        default=0.1,
+        min=0.0,
+        max=1.0,
+        update=update_camera_settings,
     )
+
+
+
 class CUSTOMCAMERA_OT_select_camera_collection(bpy.types.Operator):
     bl_idname = "customcamera.select_camera_collection"
     bl_label = "Select Camera Collection"
@@ -356,6 +369,12 @@ class CUSTOMCAMERA_PT_main_panel(bpy.types.Panel):
         if props.focal_length == "CUSTOM":
             row = layout.row()
             row.prop(props, "custom_focal_length")
+
+        row = layout.row()
+        row.prop(props, "resolution_x")
+
+        row = layout.row()
+        row.prop(props, "resolution_y")
 
         layout.separator()
 
@@ -487,6 +506,17 @@ class CUSTOMCAMERA_OT_delete_camera(bpy.types.Operator):
         self.report({'INFO'}, "Are you sure you want to delete the camera?")
         return context.window_manager.invoke_confirm(self, event)
 
+def on_object_selection_change(scene):
+    props = scene.custom_camera_props
+
+    camera_collection = bpy.data.collections.get("Camera Collection")
+    if camera_collection:
+        # Check if any object in the camera collection is selected
+        props.camera_collection_selected = any(obj.select_get() for obj in camera_collection.objects)
+    else:
+        props.camera_collection_selected = False
+
+# Register the event handler when the add-on is enabled
 def register():
     bpy.utils.register_class(CustomCameraProperties)
     bpy.types.Scene.custom_camera_props = bpy.props.PointerProperty(type=CustomCameraProperties)
@@ -498,7 +528,14 @@ def register():
     bpy.utils.register_class(UPDATE_CUSTOMCAMERA_OT_update_custom_camera)
     bpy.utils.register_class(CustomCameraPreferences)
 
+    # Add the event handler to listen for object selection changes
+    bpy.app.handlers.depsgraph_update_post.append(on_object_selection_change)
+
+# Unregister the event handler when the add-on is disabled
 def unregister():
+    # Remove the event handler
+    bpy.app.handlers.depsgraph_update_post.remove(on_object_selection_change)
+
     bpy.utils.unregister_class(CustomCameraProperties)
     del bpy.types.Scene.custom_camera_props
     bpy.utils.unregister_class(CUSTOMCAMERA_OT_create_camera)
