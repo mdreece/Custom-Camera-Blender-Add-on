@@ -97,7 +97,12 @@ If you encounter any issues with the Custom Camera add-on, please feel free to o
     Error displayed in Editor Type 'Info'.
     Current Version of Blender.exe
 
-Changelog
+Changelog:
+
+5/30/2023: v0.3.5 (alpha)
+
+    Correcting issues in 3.3/3.4 with changing the select/deselect button when selecting other objects.
+    User can now adjust the x and Y resolution in the addon panel.
 
 5/13/2023: v0.3.3 (alpha)
 
