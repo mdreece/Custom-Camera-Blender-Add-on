@@ -338,6 +338,9 @@ class CUSTOMCAMERA_OT_deselect_camera_collection(bpy.types.Operator):
             bpy.context.scene.tool_settings.mesh_select_mode[:] = (True, True, True)
             bpy.context.scene.tool_settings.use_mesh_automerge = False
 
+            # Change the operator name and label back to "Select Camera Collection"
+            self.bl_idname = "customcamera.select_camera_collection"
+            self.bl_label = "Select Camera Collection"
         else:
             self.report({'WARNING'}, "Camera Collection not found")
 
