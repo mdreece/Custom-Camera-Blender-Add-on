@@ -1,7 +1,7 @@
 bl_info = {
     "name": "Custom Camera",
     "author": "Dave Nectariad Rome",
-    "version": (0, 3, 5),
+    "version": (0, 3, 6),
     "blender": (3, 50, 1),
     "location": "View3D > Tool Shelf > Custom Camera Add-on",
     "description": "Add a custom camera setup",
@@ -318,6 +318,13 @@ class CUSTOMCAMERA_OT_select_camera_collection(bpy.types.Operator):
             self.report({'WARNING'}, "Camera Collection not found")
             props.camera_collection_selected = False
 
+        # Update camera collection selection state
+        camera_collection = bpy.data.collections.get("Camera Collection")
+        if camera_collection:
+            props.camera_collection_selected = any(obj.select_get() for obj in camera_collection.objects)
+        else:
+            props.camera_collection_selected = False
+
         return {'FINISHED'}
 
 class CUSTOMCAMERA_OT_deselect_camera_collection(bpy.types.Operator):
@@ -344,7 +351,15 @@ class CUSTOMCAMERA_OT_deselect_camera_collection(bpy.types.Operator):
         else:
             self.report({'WARNING'}, "Camera Collection not found")
 
+        # Update camera collection selection state
+        camera_collection = bpy.data.collections.get("Camera Collection")
+        if camera_collection:
+            props.camera_collection_selected = any(obj.select_get() for obj in camera_collection.objects)
+        else:
+            props.camera_collection_selected = False
+
         return {'FINISHED'}
+
 
 class CUSTOMCAMERA_PT_main_panel(bpy.types.Panel):
     bl_label = "Custom Camera"
