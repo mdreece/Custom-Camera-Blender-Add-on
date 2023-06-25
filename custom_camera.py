@@ -1,7 +1,7 @@
 bl_info = {
     "name": "Custom Camera",
     "author": "Dave Nectariad Rome",
-    "version": (0, 3, 6),
+    "version": (0, 3, 7),
     "blender": (3, 50, 1),
     "location": "View3D > Tool Shelf > Custom Camera Add-on",
     "description": "Add a custom camera setup",
@@ -24,6 +24,9 @@ def update_camera_settings(self, context):
     camera_collection = bpy.data.collections.get("Camera Collection")
     if camera_collection:
         props.camera_collection_selected = any(obj.select_get() for obj in camera_collection.objects)
+        # Show the addon panel if the camera collection is selected
+        if props.camera_collection_selected:
+            bpy.context.window_manager.sidebar_region = 'UI'
     else:
         props.camera_collection_selected = False
 
@@ -39,7 +42,7 @@ def update_camera_settings(self, context):
             if not dof_target_object:
                 # Create DOF_target object if it doesn't exist
                 dof_target_object = bpy.data.objects.new("DOF_target", None)
-                camera_object.users_collection[0].objects.link(dof_target_object)
+                camera_collection.objects.link(dof_target_object)
                 dof_target_object.location = Vector((0, 0, 0))
             camera_data.dof.focus_object = dof_target_object
 
@@ -70,7 +73,7 @@ def update_camera_settings(self, context):
         # Convert aperture size to a float
         if props.bokeh_shape == "ANAMORPHIC":
             camera_data.dof.aperture_blades = 100
-            camera_data.dof.aperture_ratio = 2.0
+            camera_data.dof.aperture_ratio = 3.0
         else:
             camera_data.dof.aperture_ratio = 1.0
         if props.aperture_size != "CUSTOM":
@@ -88,9 +91,16 @@ def update_camera_settings(self, context):
             cam_track_constraint.track_axis = 'TRACK_NEGATIVE_Z'
             cam_track_constraint.up_axis = 'UP_Y'
 
+            # Update the distance of the DOF target empty based on the depth of field slider
+            dof_target_object = bpy.data.objects.get("DOF_target")
+            if dof_target_object:
+                dof_target_object.location = camera_object.location + camera_object.matrix_world.to_quaternion() @ Vector((0.0, 0.0, -props.dof_target_distance))
+
         # Update the resolution properties
         context.scene.render.resolution_x = props.resolution_x
         context.scene.render.resolution_y = props.resolution_y
+
+
 
 def update_custom_camera(self, context):
     if bpy.data.is_dirty:
@@ -285,7 +295,6 @@ class CustomCameraProperties(bpy.types.PropertyGroup):
         max=1.0,
         update=update_camera_settings,
     )
-
 
 
 class CUSTOMCAMERA_OT_select_camera_collection(bpy.types.Operator):
