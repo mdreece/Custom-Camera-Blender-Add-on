@@ -1,111 +1,82 @@
 Custom Camera Add-on Documentation
+This documentation provides an overview and usage instructions for the "Custom Camera" add-on for Blender. The add-on allows you to create and customize a camera with various settings, including sensor size, focal length, depth of field, and more.
 Table of Contents
     1. Introduction
     2. Installation
-    3. Add-on Description
-    4. Usage
-        ◦ Enabling the Add-on
-        ◦ Customizing Camera Settings
-        ◦ Depth of Field
-        ◦ Resolution Settings
-        ◦ Camera Collection
+    3. Usage
+        ◦ Custom Camera Panel
         ◦ Creating a Custom Camera
+        ◦ Selecting and Deselecting Camera Collection
         ◦ Deleting the Custom Camera
         ◦ Updating the Add-on
-    5. Preferences
-    6. Conclusion
-1. Introduction
-The Custom Camera add-on is a tool for Blender that allows you to create and customize camera setups with ease. It provides a user-friendly interface for adjusting camera settings, enabling depth of field effects, and managing camera collections. With this add-on, you can quickly set up and modify cameras to suit your specific needs, making it ideal for various projects such as animation, visualization, and filmmaking.
-This documentation will guide you through the installation process, provide an overview of the add-on's features, and explain how to use each functionality effectively.
-2. Installation
-To install the Custom Camera add-on, follow these steps:
-    1. Download the add-on file (custom_camera.py) from the official GitHub repository: https://github.com/mdreece/Custom-Camera-Blender-Add-on
+    4. Preferences
+    5. Support and Feedback
+    6. License
+Introduction
+The "Custom Camera" add-on provides a convenient way to create and manage a custom camera in Blender. It offers several options to customize the camera's properties, such as sensor size, focal length, depth of field, aperture size, and bokeh shape. The add-on also allows you to create a camera collection and easily select or deselect the objects within it.
+Installation
+To install the "Custom Camera" add-on, follow these steps:
+    1. Download the add-on script from the Custom Camera GitHub repository.
     2. Launch Blender.
-    3. Open the Preferences window by clicking on "Edit" > "Preferences" or using the shortcut "Ctrl+Alt+U".
+    3. Open the Preferences window by navigating to Edit > Preferences or using the keyboard shortcut Ctrl+Alt+U.
     4. In the Preferences window, click on the "Add-ons" tab.
-    5. Click on the "Install..." button located at the top right corner of the window.
-    6. Browse and select the custom_camera.py file you downloaded in step 1.
-    7. Click on the "Install Add-on" button to install the Custom Camera add-on.
-    8. Once installed, enable the add-on by ticking the checkbox next to its name in the add-ons list.
-    9. Click on the "Save Preferences" button to save the changes.
-The Custom Camera add-on is now installed and ready to use.
-3. Add-on Description
-The Custom Camera add-on allows you to create and customize camera setups in Blender. It provides a comprehensive set of features for adjusting camera settings, enabling depth of field effects, and managing camera collections. With this add-on, you can easily create custom cameras with specific sensor sizes, focal lengths, depth of field properties, and resolution settings.
-Key Features:
-    • Customizable sensor size and focal length
-    • Depth of field effects with adjustable parameters
-    • Resolution settings for X and Y dimensions
-    • Camera collection management
-    • Creation and deletion of custom cameras
-    • Add-on update functionality
-4. Usage
-Enabling the Add-on
-Before you can use the Custom Camera add-on, you need to enable it in Blender. Here's how:
+    5. Click the "Install..." button located at the top right of the window.
+    6. Browse and select the downloaded add-on script file (custom_camera.py).
+    7. Click the "Install Add-on" button.
+    8. Once installed, enable the add-on by checking the checkbox next to its name ("Custom Camera").
+    9. The add-on is now ready to use.
+Usage
+Custom Camera Panel
+The "Custom Camera" panel provides a graphical interface to customize the camera properties. To access the panel, follow these steps:
     1. Launch Blender.
-    2. Open the Preferences window by clicking on "Edit" > "Preferences" or using the shortcut "Ctrl+Alt+U".
-    3. In the Preferences window, click on the "Add-ons" tab.
-    4. Search for "Custom Camera" in the search bar.
-    5. Tick the checkbox next to "Object: Custom Camera" to enable the add-on.
-    6. Click on the "Save Preferences" button to save the changes.
-The Custom Camera add-on is now enabled and accessible within Blender.
-Customizing Camera Settings
-The Custom Camera add-on provides various options for customizing camera settings. Here's how you can customize the camera:
-    1. Open the "Tool Shelf" panel in the "3D Viewport" by pressing the "T" key.
-    2. In the "Tool Shelf," navigate to the "Custom Camera" tab.
-    3. Adjust the following settings:
-        ◦ Sensor Size: Choose the sensor size from the available options or select "Custom" to specify a custom sensor size in millimeters.
-        ◦ Focal Length: Select the focal length from the available options or choose "Custom" to set a custom focal length in millimeters.
-        ◦ Resolution X: Set the X resolution of the camera in pixels.
-        ◦ Resolution Y: Set the Y resolution of the camera in pixels.
-    4. The camera settings will update dynamically as you make changes.
-Depth of Field
-The Custom Camera add-on allows you to enable and configure depth of field effects for your camera. Here's how you can use depth of field:
-    1. In the "Custom Camera" tab of the "Tool Shelf," enable the "Use Depth of Field" checkbox.
-    2. Adjust the following parameters:
-        ◦ DOF Target Distance: Set the distance of the depth of field target empty.
-        ◦ Bokeh Shape: Choose the shape of the bokeh effect from the available options or select "Custom" to specify a custom bokeh size.
-        ◦ Aperture Size: Select the aperture size from the available options or choose "Custom" to set a custom aperture size.
-    3. The camera will now simulate depth of field based on the specified settings.
-Resolution Settings
-You can adjust the resolution settings of the camera using the Custom Camera add-on. Here's how:
-    1. In the "Custom Camera" tab of the "Tool Shelf," locate the "Resolution X" and "Resolution Y" parameters.
-    2. Set the desired values for the X and Y resolutions of the camera in pixels.
-    3. The camera's resolution will update accordingly.
-Camera Collection
-The Custom Camera add-on provides functionality for managing camera collections. Here's how you can work with camera collections:
-    1. In the "Custom Camera" tab of the "Tool Shelf," you'll find a section related to camera collections.
-    2. If a camera collection named "Camera Collection" doesn't exist, click on the "Create Camera Collection" button to create one.
-    3. To select all objects within the camera collection, click on the "Select Camera Collection" button.
-    4. To deselect all objects within the camera collection, click on the "Deselect Camera Collection" button.
-    5. The selection state of the camera collection will be displayed in the add-on panel.
+    2. Switch to the "3D View" workspace.
+    3. In the "Tool Shelf" area, locate the "Custom Camera" tab.
+    4. If the "Tool Shelf" is not visible, press the "T" key to toggle its visibility.
 Creating a Custom Camera
-The Custom Camera add-on allows you to create a custom camera with the specified settings. Here's how to create a custom camera:
-    1. In the "Custom Camera" tab of the "Tool Shelf," locate the "Create Custom Camera" button.
-    2. Click on the "Create Custom Camera" button to create a new camera object with the custom settings.
-    3. A camera named "CustomCamera" will be created along with a camera collection named "Camera Collection."
-    4. The camera object will appear in the scene at the default location.
+To create a custom camera using the add-on, follow these steps:
+    1. Make sure the "Custom Camera" panel is visible (refer to the previous section).
+    2. Adjust the desired camera properties:
+        ◦ Sensor Size: Choose a predefined sensor size from the dropdown list or select "Custom" to set a custom size.
+        ◦ Focal Length: Choose a predefined focal length from the dropdown list or select "Custom" to set a custom length.
+        ◦ Resolution X: Set the desired resolution in the X dimension (width) of the camera.
+        ◦ Resolution Y: Set the desired resolution in the Y dimension (height) of the camera.
+        ◦ Use Depth of Field: Enable or disable depth of field for the camera.
+        ◦ DOF Target Distance: Set the distance of the depth of field target.
+        ◦ Bokeh Shape: Choose a predefined bokeh shape from the dropdown list or select "Custom" to set a custom shape.
+        ◦ Aperture Size: Choose a predefined aperture size from the dropdown list or select "Custom" to set a custom size.
+        ◦ Custom Sensor Size: Set a custom sensor size (if "Sensor Size" is set to "Custom").
+        ◦ Custom Focal Length: Set a custom focal length (if "Focal Length" is set to "Custom").
+        ◦ Custom Bokeh Size: Set a custom bokeh size (if "Bokeh Shape" is set to "Custom").
+        ◦ Custom Aperture Size: Set a custom aperture size (if "Aperture Size" is set to "Custom").
+    3. To create the custom camera, click the "Create Custom Camera" button.
+Selecting and Deselecting Camera Collection
+The add-on provides the ability to select and deselect objects within the camera collection. To perform these actions, follow these steps:
+    • Select Camera Collection:
+        1. Make sure the camera collection exists. If not, click the "Create Camera Collection" button in the "Custom Camera" panel.
+        2. Locate the "Select Camera Collection" button in the "Custom Camera" panel and click it. This action selects all objects within the camera collection.
+    • Deselect Camera Collection:
+        1. Make sure the camera collection exists. If not, click the "Create Camera Collection" button in the "Custom Camera" panel.
+        2. Locate the "Deselect Camera Collection" button in the "Custom Camera" panel and click it. This action deselects all objects within the camera collection.
 Deleting the Custom Camera
-If you no longer need the custom camera created by the Custom Camera add-on, you can delete it. Here's how:
-    1. In the "Custom Camera" tab of the "Tool Shelf," locate the "Delete Camera" button.
-    2. Click on the "Delete Camera" button to initiate the deletion process.
-    3. A confirmation prompt will appear asking if you're sure you want to delete the camera.
-    4. Click "Confirm" to proceed with the deletion or "Cancel" to abort.
-    5. The camera object, camera collection, and associated objects will be removed from the scene.
+To delete the custom camera created with the add-on, follow these steps:
+    1. Locate the "Delete Camera" button in the "Custom Camera" panel and click it.
+    2. A confirmation prompt will appear. Click "OK" to proceed with the deletion.
 Updating the Add-on
-The Custom Camera add-on provides an update functionality to keep it up to date with the latest version from the official GitHub repository. Here's how to update the add-on:
-    1. In the "Preferences" window, navigate to the "Add-ons" tab.
-    2. Locate the "Update Custom Camera" button in the "Custom Camera" add-on section.
-    3. Click on the "Update Custom Camera" button to initiate the update process.
-    4. The add-on will be updated with the latest version from the GitHub repository.
-    5. If there are unsaved changes in the project, a prompt will ask if you want to save before updating the add-on.
-5. Preferences
-The Custom Camera add-on provides a preferences section where you can customize certain aspects of the add-on. Here's how to access the preferences:
-    1. Open the Preferences window by clicking on "Edit" > "Preferences" or using the shortcut "Ctrl+Alt+U".
-    2. In the Preferences window, click on the "Add-ons" tab.
-    3. Locate and click on the "Custom Camera" add-on to display its preferences.
-The preferences section allows you to perform the following actions:
-    • Update Custom Camera: Manually update the Custom Camera add-on with the latest version from the official GitHub repository.
-    • Visit GitHub Repository: Open the GitHub repository page for the Custom Camera add-on in your web browser.
-6. Conclusion
-The Custom Camera add-on provides a convenient way to create and customize camera setups in Blender. By offering a range of options for adjusting camera settings, enabling depth of field effects, and managing camera collections, the add-on enhances your workflow and enables you to achieve desired camera configurations effortlessly.
-Experiment with the Custom Camera add-on to create stunning visuals, simulate realistic camera effects, and optimize your camera setups in Blender. Enjoy the flexibility and efficiency it brings to your projects!
+The "Custom Camera" add-on can be updated to the latest version from the GitHub repository. To update the add-on, follow these steps:
+    1. Open the "Custom Camera" preferences:
+        ◦ In the Preferences window (Edit > Preferences), click on the "Add-ons" tab.
+        ◦ Locate the "Custom Camera" add-on in the list and click on it.
+        ◦ The add-on preferences will be displayed.
+    2. Click the "Update Custom Camera" button in the preferences window.
+    3. The add-on will be updated to the latest version from the GitHub repository.
+Preferences
+The "Custom Camera" add-on provides a preferences panel with options for updating the add-on and visiting the GitHub repository. To access the preferences, follow these steps:
+    1. Open the Preferences window (Edit > Preferences).
+    2. Click on the "Add-ons" tab.
+    3. Locate the "Custom Camera" add-on in the list and click on it.
+    4. The preferences for the "Custom Camera" add-on will be displayed.
+    5. In the preferences panel, you can find the following options:
+        ◦ Update Custom Camera: Click this button to update the add-on to the latest version from the GitHub repository.
+        ◦ Visit GitHub Repository: Click this button to open the GitHub repository for the "Custom Camera" add-on in your web browser.
+Support and Feedback
+If you encounter any issues or have feedback regarding the "Custom Camera" add-on, please visit the Custom Camera GitHub repository and create an issue.
