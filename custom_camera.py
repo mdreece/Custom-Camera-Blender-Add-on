@@ -456,6 +456,9 @@ class CUSTOMCAMERA_OT_create_camera(bpy.types.Operator):
         camera_data = bpy.data.cameras.new("CustomCamera")
         camera_object = bpy.data.objects.new("CustomCamera", camera_data)
         camera_collection.objects.link(camera_object)
+        
+        # Set end clip
+        camera_data.clip_end = 1000000000
 
         # Set Camera location
         camera_object.location = (6.5, -6.5, 4.0)
