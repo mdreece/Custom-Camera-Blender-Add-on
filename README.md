@@ -1,20 +1,20 @@
 Custom Camera Add-on Documentation
 
 Table of Contents
-1. Introduction
-2. Installation
-3. Add-on Description
-4. Usage
- - Enabling the Add-on
- - Customizing Camera Settings
- - Depth of Field
- - Resolution Settings
- - Camera Collection
- - Creating a Custom Camera
- - Deleting the Custom Camera
- - Updating the Add-on
-5. Preferences
-6. Conclusion
+Introduction
+Installation
+Add-on Description
+Usage
+  - Enabling the Add-on
+  - Customizing Camera Settings
+  - Depth of Field
+  - Resolution Settings
+  - Camera Collection
+  - Creating a Custom Camera
+  - Deleting the Custom Camera
+  - Updating the Add-on
+Preferences
+Conclusion
 
 
  
