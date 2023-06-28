@@ -1,20 +1,20 @@
 Custom Camera Add-on Documentation
 
 Table of Contents
-    1. Introduction
-    2. Installation
-    3. Add-on Description
-    4. Usage
-        ◦ Enabling the Add-on
-        ◦ Customizing Camera Settings
-        ◦ Depth of Field
-        ◦ Resolution Settings
-        ◦ Camera Collection
-        ◦ Creating a Custom Camera
-        ◦ Deleting the Custom Camera
-        ◦ Updating the Add-on
-    5. Preferences
-    6. Conclusion
+1. Introduction
+2. Installation
+3. Add-on Description
+4. Usage
+ - Enabling the Add-on
+ - Customizing Camera Settings
+ - Depth of Field
+ - Resolution Settings
+ - Camera Collection
+ - Creating a Custom Camera
+ - Deleting the Custom Camera
+ - Updating the Add-on
+5. Preferences
+6. Conclusion
 	
 1. Introduction
 The Custom Camera add-on is a tool for Blender that allows you to create and customize camera setups with ease. It provides a user-friendly interface for adjusting camera settings, enabling depth of field effects, and managing camera collections. With this add-on, you can quickly set up and modify cameras to suit your specific needs, making it ideal for various projects such as animation, visualization, and filmmaking.
