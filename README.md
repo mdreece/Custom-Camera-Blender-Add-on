@@ -130,7 +130,7 @@ Experiment with the Custom Camera add-on to create stunning visuals, simulate re
 
 
 
-##CHANGELOG:
+## CHANGELOG:
 
 #6/27/2023: v0.3.7 - Created Camera now has end clip of 1000000000m
 
