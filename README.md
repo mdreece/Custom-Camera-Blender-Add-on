@@ -131,14 +131,17 @@ Experiment with the Custom Camera add-on to create stunning visuals, simulate re
 
 
 ##CHANGELOG:
-6/27/2023: v0.3.7 - Created Camera now has end clip of 1000000000m
 
-6/25/2023: v0.3.6 - 'Select Camera Collection' and 'Deselect Camera Collection' change as expected if the group is selected or not.
+#6/27/2023: v0.3.7 - Created Camera now has end clip of 1000000000m
 
-6/16/2023: v0.3.4 - Bug fix where DOF-Target when deselected and then enabled again would create DOF-Target001 which would not interact with the created camera.
+#6/25/2023: v0.3.6 - 'Select Camera Collection' and 'Deselect Camera Collection' change as expected if the group is selected or not.
 
-5/15/2023: v0.3.0 - Added more Bokeh options (Anamorphic etc..)
+#6/16/2023: v0.3.4 - Bug fix where DOF-Target when deselected and then enabled again would create DOF-Target001 which would not interact with the created camera.
 
-5/05/2023: v0.2.9 - Added 'Update' options to Add-on Preferences window.
+#5/15/2023: v0.3.0 - Added more Bokeh options (Anamorphic etc..)
 
-5/04/2023: v0.2.8 - Added Github access from Add-on Preferences window.
+#5/05/2023: v0.2.9 - Added 'Update' options to Add-on Preferences window.
+
+#5/04/2023: v0.2.8 - Added Github access from Add-on Preferences window.
+
+#PREVIOUS LOG INFORMATION LOST
