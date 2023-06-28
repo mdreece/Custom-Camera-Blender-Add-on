@@ -21,15 +21,6 @@ import subprocess
 def update_camera_settings(self, context):
     props = context.scene.custom_camera_props
 
-    camera_collection = bpy.data.collections.get("Camera Collection")
-    if camera_collection:
-        props.camera_collection_selected = any(obj.select_get() for obj in camera_collection.objects)
-        # Show the addon panel if the camera collection is selected
-        if props.camera_collection_selected:
-            bpy.context.window_manager.sidebar_region = 'UI'
-    else:
-        props.camera_collection_selected = False
-
     camera_object = bpy.data.objects.get("CustomCamera")
     if camera_object and camera_object.type == 'CAMERA':
         camera_data = camera_object.data
@@ -42,7 +33,7 @@ def update_camera_settings(self, context):
             if not dof_target_object:
                 # Create DOF_target object if it doesn't exist
                 dof_target_object = bpy.data.objects.new("DOF_target", None)
-                camera_collection.objects.link(dof_target_object)
+                bpy.data.collections.get("Camera Collection").objects.link(dof_target_object)
                 dof_target_object.location = Vector((0, 0, 0))
             camera_data.dof.focus_object = dof_target_object
 
@@ -73,7 +64,7 @@ def update_camera_settings(self, context):
         # Convert aperture size to a float
         if props.bokeh_shape == "ANAMORPHIC":
             camera_data.dof.aperture_blades = 100
-            camera_data.dof.aperture_ratio = 3.0
+            camera_data.dof.aperture_ratio = 2.0
         else:
             camera_data.dof.aperture_ratio = 1.0
         if props.aperture_size != "CUSTOM":
@@ -99,6 +90,17 @@ def update_camera_settings(self, context):
         # Update the resolution properties
         context.scene.render.resolution_x = props.resolution_x
         context.scene.render.resolution_y = props.resolution_y
+
+        # Restore DOF_Target object if depth of field is re-enabled
+        if props.use_depth_of_field and not dof_target_object:
+            dof_target_object = bpy.data.objects.new("DOF_target", None)
+            bpy.data.collections.get("Camera Collection").objects.link(dof_target_object)
+            dof_target_object.location = Vector((0, 0, 0))
+            camera_data.dof.focus_object = dof_target_object
+
+            # Set the distance of the DOF target empty
+            dof_target_object.location = camera_object.location + camera_object.matrix_world.to_quaternion() @ Vector((0.0, 0.0, -props.dof_target_distance))
+
 
 
 
@@ -323,18 +325,15 @@ class CUSTOMCAMERA_OT_select_camera_collection(bpy.types.Operator):
             # Disable object selection
             bpy.context.scene.tool_settings.use_mesh_automerge = True
 
+            # Change the operator name and label to "Deselect Camera Collection"
+            self.bl_idname = "customcamera.deselect_camera_collection"
+            self.bl_label = "Deselect Camera Collection"
         else:
             self.report({'WARNING'}, "Camera Collection not found")
             props.camera_collection_selected = False
 
-        # Update camera collection selection state
-        camera_collection = bpy.data.collections.get("Camera Collection")
-        if camera_collection:
-            props.camera_collection_selected = any(obj.select_get() for obj in camera_collection.objects)
-        else:
-            props.camera_collection_selected = False
-
         return {'FINISHED'}
+
 
 class CUSTOMCAMERA_OT_deselect_camera_collection(bpy.types.Operator):
     bl_idname = "customcamera.deselect_camera_collection"
@@ -359,13 +358,6 @@ class CUSTOMCAMERA_OT_deselect_camera_collection(bpy.types.Operator):
             self.bl_label = "Select Camera Collection"
         else:
             self.report({'WARNING'}, "Camera Collection not found")
-
-        # Update camera collection selection state
-        camera_collection = bpy.data.collections.get("Camera Collection")
-        if camera_collection:
-            props.camera_collection_selected = any(obj.select_get() for obj in camera_collection.objects)
-        else:
-            props.camera_collection_selected = False
 
         return {'FINISHED'}
 
