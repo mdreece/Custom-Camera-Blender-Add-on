@@ -31,16 +31,16 @@ def update_camera_settings(self, context):
         if props.use_depth_of_field:
             dof_target_object = bpy.data.objects.get("DOF_target")
             if not dof_target_object:
-                # Create DOF_target object if it doesn't exist
+               
                 dof_target_object = bpy.data.objects.new("DOF_target", None)
                 bpy.data.collections.get("Camera Collection").objects.link(dof_target_object)
                 dof_target_object.location = Vector((0, 0, 0))
             camera_data.dof.focus_object = dof_target_object
 
-            # Set the distance of the DOF target empty
+            
             dof_target_object.location = camera_object.location + camera_object.matrix_world.to_quaternion() @ Vector((0.0, 0.0, -props.dof_target_distance))
         else:
-            # Remove DOF_target object if it exists
+            
             dof_target_object = bpy.data.objects.get("DOF_target")
             if dof_target_object:
                 bpy.data.objects.remove(dof_target_object)
@@ -58,10 +58,10 @@ def update_camera_settings(self, context):
                 "PENTAGON": 5,
                 "HEXAGONAL": 6,
                 "OCTAGONAL": 8,
-                "ANAMORPHIC": 100, # Value to be replaced later
+                "ANAMORPHIC": 100, 
             }[props.bokeh_shape]
 
-        # Convert aperture size to a float
+     
         if props.bokeh_shape == "ANAMORPHIC":
             camera_data.dof.aperture_blades = 100
             camera_data.dof.aperture_ratio = 2.0
@@ -73,7 +73,7 @@ def update_camera_settings(self, context):
         else:
             camera_data.dof.aperture_fstop = props.custom_aperture_size
 
-        # Connect the camera to the DOF_target object via a Track To constraint
+      
         cam_target_object = props.cam_target
         if cam_target_object:
             camera_object.constraints.clear()
@@ -82,23 +82,23 @@ def update_camera_settings(self, context):
             cam_track_constraint.track_axis = 'TRACK_NEGATIVE_Z'
             cam_track_constraint.up_axis = 'UP_Y'
 
-            # Update the distance of the DOF target empty based on the depth of field slider
+        
             dof_target_object = bpy.data.objects.get("DOF_target")
             if dof_target_object:
                 dof_target_object.location = camera_object.location + camera_object.matrix_world.to_quaternion() @ Vector((0.0, 0.0, -props.dof_target_distance))
 
-        # Update the resolution properties
+   
         context.scene.render.resolution_x = props.resolution_x
         context.scene.render.resolution_y = props.resolution_y
 
-        # Restore DOF_Target object if depth of field is re-enabled
+    
         if props.use_depth_of_field and not dof_target_object:
             dof_target_object = bpy.data.objects.new("DOF_target", None)
             bpy.data.collections.get("Camera Collection").objects.link(dof_target_object)
             dof_target_object.location = Vector((0, 0, 0))
             camera_data.dof.focus_object = dof_target_object
 
-            # Set the distance of the DOF target empty
+       
             dof_target_object.location = camera_object.location + camera_object.matrix_world.to_quaternion() @ Vector((0.0, 0.0, -props.dof_target_distance))
 
 
@@ -113,20 +113,20 @@ def update_custom_camera(self, context):
             self.report({"INFO"}, "Custom Camera add-on update cancelled.")
             return {'CANCELLED'}
 
-    # Download the updated script
+
     url = "https://raw.githubusercontent.com/mdreece/Custom-Camera-Blender-Add-on/main/custom_camera.py"
     response = urllib.request.urlopen(url)
     data = response.read()
 
-    # Write the updated script to disk
+  
     script_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "custom_camera.py")
     with open(script_path, "wb") as f:
         f.write(data)
 
-    # Prompt to save the project before closing Blender
+   
     return bpy.ops.wm.quit_blender('INVOKE_DEFAULT')
 
-    # Prompt to save the project before closing Blender
+ 
     wm = bpy.context.window_manager
     return wm.invoke_props_dialog(self.quit_blender, width=400)
 
@@ -309,23 +309,22 @@ class CUSTOMCAMERA_OT_select_camera_collection(bpy.types.Operator):
         props = context.scene.custom_camera_props
 
         if camera_collection:
-            # Deselect all objects first
             bpy.ops.object.select_all(action='DESELECT')
 
-            # Select objects in the camera collection
+        
             for obj in camera_collection.objects:
                 obj.select_set(True)
 
             props.camera_collection_selected = True
 
-            # Disable selection for other objects
+        
             bpy.context.scene.tool_settings.mesh_select_mode[:] = (False, False, False)
             bpy.context.scene.tool_settings.mesh_select_mode[:] = (True, True, True)
 
-            # Disable object selection
+     
             bpy.context.scene.tool_settings.use_mesh_automerge = True
 
-            # Change the operator name and label to "Deselect Camera Collection"
+         
             self.bl_idname = "customcamera.deselect_camera_collection"
             self.bl_label = "Deselect Camera Collection"
         else:
@@ -349,11 +348,11 @@ class CUSTOMCAMERA_OT_deselect_camera_collection(bpy.types.Operator):
                 obj.select_set(False)
             props.camera_collection_selected = False
 
-            # Enable selection for other objects
+    
             bpy.context.scene.tool_settings.mesh_select_mode[:] = (True, True, True)
             bpy.context.scene.tool_settings.use_mesh_automerge = False
 
-            # Change the operator name and label back to "Select Camera Collection"
+          
             self.bl_idname = "customcamera.select_camera_collection"
             self.bl_label = "Select Camera Collection"
         else:
@@ -448,57 +447,57 @@ class CUSTOMCAMERA_OT_create_camera(bpy.types.Operator):
     def execute(self, context):
         props = context.scene.custom_camera_props
 
-        # Create Camera Collection
+  
         camera_collection = bpy.data.collections.new("Camera Collection")
         bpy.context.scene.collection.children.link(camera_collection)
 
-        # Create Camera
+
         camera_data = bpy.data.cameras.new("CustomCamera")
         camera_object = bpy.data.objects.new("CustomCamera", camera_data)
         camera_collection.objects.link(camera_object)
         
-        # Set end clip
+
         camera_data.clip_end = 1000000000
 
-        # Set Camera location
+
         camera_object.location = (6.5, -6.5, 4.0)
 
-        # Create CAM_target object
+ 
         cam_target_object = bpy.data.objects.new("CAM_target", None)
         camera_collection.objects.link(cam_target_object)
         cam_target_object.location = Vector((0, 0, 0))
 
-        # Connect camera to CAM_target object via Track To constraint
+   
         cam_track_constraint = camera_object.constraints.new(type='TRACK_TO')
         cam_track_constraint.target = cam_target_object
         cam_track_constraint.track_axis = 'TRACK_NEGATIVE_Z'
         cam_track_constraint.up_axis = 'UP_Y'
 
-        # Store CAM_target object in custom_camera_props
+     
         props.cam_target = cam_target_object
 
         if props.use_depth_of_field:
-            # Create DOF_target object
+      
             dof_target_object = bpy.data.objects.new("DOF_target", None)
             camera_collection.objects.link(dof_target_object)
             dof_target_object.location = Vector((0, 0, 0))
 
-            # Store the DOF_target object in the custom_camera_props
+         
             props.dof_target = dof_target_object
 
-            # Enable depth of field on camera
+         
             camera_data.dof.use_dof = True
 
-            # Connect depth of field to the DOF_target object
+         
             camera_data.dof.focus_object = dof_target_object
 
-            # Set the distance of the DOF target empty
+           
             dof_target_object.location = camera_object.location + camera_object.matrix_world.to_quaternion() @ Vector((0.0, 0.0, -props.dof_target_distance))
         else:
-            # Disable depth of field on camera
+         
             camera_data.dof.use_dof = False
 
-        # Update camera settings
+    
         update_camera_settings(self, context)
 
         return {'FINISHED'}
@@ -514,7 +513,6 @@ class CUSTOMCAMERA_OT_delete_camera(bpy.types.Operator):
         if self.action == 'DELETE_CAMERA':
             custom_camera_obj = bpy.data.objects.get("CustomCamera")
             if custom_camera_obj:
-                # If the camera exists, disable Depth of Field options
                 context.scene.custom_camera_props.use_depth_of_field = False
                 bpy.data.objects.remove(custom_camera_obj, do_unlink=True)
                 bpy.data.objects.remove(bpy.data.objects.get("CAM_target"), do_unlink=True)
@@ -533,12 +531,12 @@ def on_object_selection_change(scene):
 
     camera_collection = bpy.data.collections.get("Camera Collection")
     if camera_collection:
-        # Check if any object in the camera collection is selected
+      
         props.camera_collection_selected = any(obj.select_get() for obj in camera_collection.objects)
     else:
         props.camera_collection_selected = False
 
-# Register the event handler when the add-on is enabled
+
 def register():
     bpy.utils.register_class(CustomCameraProperties)
     bpy.types.Scene.custom_camera_props = bpy.props.PointerProperty(type=CustomCameraProperties)
@@ -549,15 +547,11 @@ def register():
     bpy.utils.register_class(CUSTOMCAMERA_OT_deselect_camera_collection)
     bpy.utils.register_class(UPDATE_CUSTOMCAMERA_OT_update_custom_camera)
     bpy.utils.register_class(CustomCameraPreferences)
-
-    # Add the event handler to listen for object selection changes
     bpy.app.handlers.depsgraph_update_post.append(on_object_selection_change)
 
-# Unregister the event handler when the add-on is disabled
 def unregister():
-    # Remove the event handler
-    bpy.app.handlers.depsgraph_update_post.remove(on_object_selection_change)
 
+    bpy.app.handlers.depsgraph_update_post.remove(on_object_selection_change)
     bpy.utils.unregister_class(CustomCameraProperties)
     del bpy.types.Scene.custom_camera_props
     bpy.utils.unregister_class(CUSTOMCAMERA_OT_create_camera)
