@@ -122,6 +122,31 @@ def update_camera_settings(self, context):
             track_constraint.target = props.cam_target
             track_constraint.track_axis = 'TRACK_NEGATIVE_Z'
             track_constraint.up_axis = 'UP_Y'
+            
+def update_custom_camera(self, context):
+    if bpy.data.is_dirty:
+        save_prompt = "Your project has unsaved changes. Do you want to save before updating the Custom Camera add-on?"
+        save_options = {'CANCELLED', 'FINISHED', 'NO', 'YES'}
+        save_choice = bpy.ops.wm.save_mainfile('INVOKE_DEFAULT')
+        if save_choice == 'CANCELLED':
+            self.report({"INFO"}, "Custom Camera add-on update cancelled.")
+            return {'CANCELLED'}
+
+    try:
+        url = "https://raw.githubusercontent.com/mdreece/Custom-Camera-Blender-Add-on/main/custom_camera.py"
+        response = urllib.request.urlopen(url)
+        data = response.read()
+
+        script_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "custom_camera.py")
+        with open(script_path, "wb") as f:
+            f.write(data)
+
+        self.report({"INFO"}, "Custom Camera add-on updated successfully. Please restart Blender.")
+        return {'FINISHED'}
+        
+    except Exception as e:
+        self.report({"ERROR"}, f"Update failed: {str(e)}")
+        return {'CANCELLED'}
 class CustomCameraPreferences(bpy.types.AddonPreferences):
     bl_idname = __name__
 
@@ -147,8 +172,10 @@ class UPDATE_CUSTOMCAMERA_OT_update_custom_camera(bpy.types.Operator):
     bl_description = "Update the Custom Camera add-on with the latest version from GitHub"
 
     def execute(self, context):
-        update_custom_camera(self, context)
-        return {"FINISHED"}
+        return update_custom_camera(self, context)
+
+    def invoke(self, context, event):
+        return context.window_manager.invoke_confirm(self, event)
         
 class CustomCameraProperties(bpy.types.PropertyGroup):
     sensor_size: EnumProperty(
