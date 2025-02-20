@@ -131,6 +131,8 @@ Experiment with the Custom Camera add-on to create stunning visuals, simulate re
 
 ## CHANGELOG:
 
+#2/19/2025: v0.3.8 - UI changes to main panel (also added preferences access button) - Camera Preset updates
+
 #6/27/2023: v0.3.7 - Created Camera now has end clip of 1000000000m
 
 #6/25/2023: v0.3.6 - 'Select Camera Collection' and 'Deselect Camera Collection' change as expected if the group is selected or not.
